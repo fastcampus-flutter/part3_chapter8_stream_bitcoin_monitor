@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 
 class LineChartWidget extends StatefulWidget {
   final List<double> priceList;
+  final double maxPrice;
 
-  const LineChartWidget(this.priceList, {super.key});
+  const LineChartWidget(this.priceList, {required this.maxPrice, super.key});
 
   @override
   State<LineChartWidget> createState() => _LineChartWidgetState();
 }
 
 class _LineChartWidgetState extends State<LineChartWidget> {
+  static double get axisYSize => 100;
+
   List<Color> gradientColors = [
     const Color(0xFF50E4FF),
     const Color(0xFF2196F3),
@@ -127,8 +130,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
       ),
       minX: 0,
       maxX: widget.priceList.length.toDouble(),
-      minY: 26030,
-      maxY: 26070,
+      minY: widget.maxPrice - axisYSize,
+      maxY: widget.maxPrice,
       lineBarsData: [
         LineChartBarData(
           spots: widget.priceList.mapIndexed((e, i) {

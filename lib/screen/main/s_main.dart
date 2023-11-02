@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:fast_app_base/common/cli_common.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class MainScreenState extends State<MainScreen> {
   final List<double> priceList = [];
 
   final intervalDuration = 1.seconds;
+  double maxPrice = 0;
   DateTime lastUpdatedTime = DateTime.now();
 
   @override
@@ -39,6 +41,7 @@ class MainScreenState extends State<MainScreen> {
       if (DateTime.now().difference(lastUpdatedTime) > intervalDuration) {
         lastUpdatedTime = DateTime.now();
         setState(() {
+          maxPrice = max(price, maxPrice);
           priceList.add(price);
           priceString = price.toDoubleStringAsFixed();
         });
@@ -77,7 +80,10 @@ class MainScreenState extends State<MainScreen> {
                     textStyle: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                     duration: 50.ms,
                   ),
-                  LineChartWidget(priceList)
+                  LineChartWidget(
+                    priceList,
+                    maxPrice: maxPrice,
+                  )
                 ],
               ),
             ),
